@@ -47,7 +47,7 @@ btSerial.on('found', function (address, name) {
                   if(endLine > -1 ){
                     var lignes = bufferSerial.split('\n');
                     for(var i=0; i<lignes.length-2; i++){
-                      //console.log('Ligne : %s', lignes[i]);
+                      console.log('BLUETOOTH << %s', lignes[i]);
                       // quand ca fonctionnera, envoyer les ligne aux clients web
                     }
                   }
@@ -103,4 +103,69 @@ function scanBluetooth(){
 
 setInterval(function(){
     scanBluetooth();
-}, 60000);
+}, 6000000);
+scanBluetooth();
+
+
+function PostData(donnee, valeur, dateStr) {
+  //console.log('envoi de données');
+  var querystring = require('querystring');
+    var http = require('http');
+  
+  // Build the post string from an object
+  var post_data = querystring.stringify({
+    'action': 'datalizer_setData',
+    'donnee' : donnee,
+    'valeur' : valeur,
+    'date' :   dateStr
+  });
+
+  // An object of options to indicate where to post to
+  var post_options = {
+      host: 'raspi',
+      port: '80',
+      path: "/wp-admin/admin-ajax.php",
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': post_data.length
+      }
+  };
+
+  console.log("Envoi de la requette POST sur %s%s", post_options.host, post_options.path);
+
+  // Set up the request
+  var post_req = http.request(post_options, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+          //console.log('Response: ' + chunk);
+      });
+  });
+  post_req.on('error', function(e) {
+    console.log("%s : Erreur de la requette POST: %s", getDateStr(), e.message);
+    //console.log(e);
+    // ça ne passe pas, on réessaye un peu plus tard
+    if(e.code == 'ECONNRESET'){
+      var delayPost = function(){
+        console.log("%s : Nouvelle tentative d'envoi de %s: %d", getDateStr(), donnee, valeur);
+        PostData(donnee, valeur, dateStr);
+      }
+      setTimeout(delayPost, 5000);
+    }
+  });
+
+  // post the data
+  post_req.write(post_data);
+  post_req.end();
+
+}
+
+function getDateStr(){
+  var now = new Date();
+  var annee   = now.getFullYear();
+  var mois    = now.getMonth() + 1;
+  var jour    = now.getDate();
+  var dateFormat = annee + '-' + mois + '-' + jour;
+  dateFormat += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+  return dateFormat;
+}
