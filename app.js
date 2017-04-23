@@ -103,7 +103,7 @@ function scanBluetooth(){
 
 setInterval(function(){
     scanBluetooth();
-}, 6000000);
+}, 600000);
 scanBluetooth();
 
 
