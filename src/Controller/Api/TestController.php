@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 class TestController extends AbstractController
 {
     /**
-     * @Route("/api/test", name="api_test_get", methods={"GET"})
+     * @Route("/api/sensor", name="api_sensor_get", methods={"GET"})
      */
     public function testGet( Request $request, LoggerInterface $logger ): Response
     {
@@ -23,7 +23,7 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("/api/test", name="api_test_post", methods={"POST"})
+     * @Route("/api/sensor", name="api_sensor_post", methods={"POST"})
      */
     public function testPost( Request $request, LoggerInterface $logger ): Response
     {
