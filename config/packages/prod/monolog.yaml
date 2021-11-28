@@ -25,3 +25,4 @@ monolog:
             # defaults to zero, which means infinite files
             max_files: 99
             channels: ["app"]
+            
