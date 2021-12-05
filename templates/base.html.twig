@@ -17,6 +17,12 @@
     </head>
     <body>
         {% block body %}
+        <header>
+            <nav class="nav">
+                <a class="nav-link" href="{{ path('sensor_index') }}">Sensor list</a>
+                <a class="nav-link disabled" href="#">Users</a>
+            </nav>
+        </header>
         <div class="container">
             {% block content %}
             {% endblock %}
