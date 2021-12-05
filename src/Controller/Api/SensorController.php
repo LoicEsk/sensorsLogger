@@ -34,20 +34,23 @@ class SensorController extends AbstractController
         $sensorValue = (float) $request->request->get( 'value' ) ?: false;
 
         $em = $this->getDoctrine()->getManager();
-        $logger->info( "Requete POST reçue", [ 'sensor' => $sensorKeyCode, 'value' => $sensorValue ] );
-
-        if( !!$sensorKeyCode && !!$sensorValue) {
+        
+        if( $sensorKeyCode && $sensorValue) {
+            $logger->info( "Requete POST reçue", [ 'sensor' => $sensorKeyCode, 'value' => $sensorValue ] );
 
             // recherche du sensor
             $sensor = $sensorRepo->findOneByKeyCode( $sensorKeyCode );
             if( !$sensor ) {
                 // sensor inconnu. Ajout en bdd en inactif
+                $logger->debug( "sensor inconnu. Ajout en bdd en inactif" );
                 $sensor = new Sensor( $sensorKeyCode );
                 $em->persist( $sensor );
             } else {
+                $logger->debug( "Sensor $sensorKeyCode reconnu" );
                 if( $sensor->getActif() ) {
+                    $logger->debug('Sensor actif');
                     // sensor actif -> on enregistre la valeur
-                    $data = new SansorData( $sensor, $sensorValue );
+                    $data = new SensorData( $sensor, $sensorValue );
                     $em->persist( $data );
                 }
             }
