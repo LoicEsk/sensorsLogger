@@ -3,8 +3,9 @@
 {% block title %}Sensor{% endblock %}
 
 {% block content %}
-    <h1>Sensor</h1>
+    <h1>Sonde {{sensor.name }}</h1>
 
+    <h2>Configuration</h2>
     <table class="table">
         <tbody>
             <tr>
@@ -35,4 +36,23 @@
     <a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a>
 
     {{ include('sensor/_delete_form.html.twig') }}
+
+    <h2 class="mt-5">Data</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Valeur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <th>{{ d.date|format_datetime() }}</th>
+                <td>{{ d.value }}{{ sensor.unit }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

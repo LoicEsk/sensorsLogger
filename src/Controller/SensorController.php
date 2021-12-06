@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\SensorDataRepository;
 
 /**
  * @Route("/sensor")
@@ -51,10 +52,13 @@ class SensorController extends AbstractController
     /**
      * @Route("/{id}", name="sensor_show", methods={"GET"})
      */
-    public function show(Sensor $sensor): Response
+    public function show(Sensor $sensor, SensorDataRepository $sensorDataRepo ): Response
     {
+        $sensorData = $sensorDataRepo->findBy( [ 'sensor' => $sensor ], [ 'date' => 'DESC'], 1000 );
+
         return $this->render('sensor/show.html.twig', [
             'sensor' => $sensor,
+            'data'      => $sensorData
         ]);
     }
 
