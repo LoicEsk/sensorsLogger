@@ -22,3 +22,14 @@ services:
         ports:
             - "1025:1025"
             - "8025:8025"
+
+    webpack:
+        image: node:16
+        volumes:
+            - ./:/usr/src/app
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+            - "8080:8080"
+        working_dir: /usr/src/app
+        command: sh -c "npm install && npm run dev-server"
