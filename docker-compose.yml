@@ -24,12 +24,12 @@ services:
             - "8025:8025"
 
     webpack:
-        image: node:16
+        build: .docker/webpack
         volumes:
             - ./:/usr/src/app
         ports:
-            - "3000:3000"
-            - "3001:3001"
             - "8080:8080"
         working_dir: /usr/src/app
+        environment: 
+            - LOCAL_DOMAIN=api/
         command: sh -c "npm install && npm run dev-server"
