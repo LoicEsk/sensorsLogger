@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>StartTime</th>
+                <th>Période</th>
                 <th>EndTime</th>
                 <th>Position</th>
                 <th>Size</th>
@@ -21,7 +21,7 @@
         {% for widget in widgets %}
             <tr>
                 <td>{{ widget.id }}</td>
-                <td>{{ widget.startTime }}</td>
+                <td>{{ widget.periodeValue }} {{ widget.periodeUnit }}</td>
                 <td>{{ widget.endTime }}</td>
                 <td>{{ widget.position }}</td>
                 <td>{{ widget.size }}</td>

@@ -6,6 +6,7 @@ use App\Repository\WidgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=WidgetRepository::class)
@@ -27,11 +28,6 @@ class Widget
     /**
      * @ORM\Column(type="string", length=12)
      */
-    private $startTime;
-
-    /**
-     * @ORM\Column(type="string", length=12)
-     */
     private $endTime;
 
     /**
@@ -48,6 +44,17 @@ class Widget
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=12)
+     */
+    private $periodeUnit;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Type(type="integer")
+     */
+    private $periodeValue;
 
     public function __construct()
     {
@@ -79,18 +86,6 @@ class Widget
     public function removeSensor(Sensor $sensor): self
     {
         $this->sensors->removeElement($sensor);
-
-        return $this;
-    }
-
-    public function getStartTime(): ?string
-    {
-        return $this->startTime;
-    }
-
-    public function setStartTime(string $startTime): self
-    {
-        $this->startTime = $startTime;
 
         return $this;
     }
@@ -139,6 +134,30 @@ class Widget
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPeriodeUnit(): ?string
+    {
+        return $this->periodeUnit;
+    }
+
+    public function setPeriodeUnit(string $periodeUnit): self
+    {
+        $this->periodeUnit = $periodeUnit;
+
+        return $this;
+    }
+
+    public function getPeriodeValue(): ?int
+    {
+        return $this->periodeValue;
+    }
+
+    public function setPeriodeValue(int $periodeValue): self
+    {
+        $this->periodeValue = $periodeValue;
 
         return $this;
     }

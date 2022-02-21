@@ -19,32 +19,27 @@ class SensorDataRepository extends ServiceEntityRepository
         parent::__construct($registry, SensorData::class);
     }
 
-    // /**
-    //  * @return SensorData[] Returns an array of SensorData objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return SensorData[] Returns an array of SensorData objects
+    */
+    public function findBetween( $sensor, $from, $to)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+        $qb = $this->createQueryBuilder('d');
+        return $qb
+            ->andWhere('d.sensor = :sensor')
+            ->setParameter('sensor', $sensor->getId())
+
+            ->andWhere( $qb->expr()->gte( 'd.date', ':from' ))
+            ->setParameter( 'from', $from )
+
+            ->andWhere( $qb->expr()->lte( 'd.date', ':to' ))
+            ->setParameter( 'to', $to )
+
+            ->orderBy( 'd.date', 'ASC' )
+
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?SensorData
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

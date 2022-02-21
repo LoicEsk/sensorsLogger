@@ -29,20 +29,25 @@ class WidgetType extends AbstractType
             ->add('position', ChoiceType::class, [
                 'choices'  => $positionValues
             ])
-            ->add('startTime', ChoiceType::class, [
-                'choices'   => [
-                    'Il y a 1 jour'     => '-P1D',
-                    'Il y a 1 semaine'  => '-P7D',
-                    'Il y a 1 mois'     => '-P1M',
-                    'Maintenant'        => 'P0'
-                ]
-            ])
             ->add('endTime', ChoiceType::class, [
                 'choices'   => [
                     'Maintenant'        => 'P0',
                     'Il y a 1 jour'     => '-P1D',
                     'Il y a 1 semaine'  => '-P7D',
                     'Il y a 1 mois'     => '-P1M',
+                ],
+                'disabled'  => true,
+                'help'      => 'La fonctionnalité n\'est pas encore disponible'
+            ])
+            ->add('periodeValue', null, [
+                'label' => 'Durée de la période'
+            ])
+            ->add('periodeUnit', ChoiceType::class, [
+                'choices'   => [
+                    'Années' => 'years',
+                    'Mois' => 'month',
+                    'Jours' => 'days',
+                    'Minutes' => 'minutes'
                 ]
             ])
             ->add('size', ChoiceType::class, [

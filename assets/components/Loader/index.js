@@ -11,9 +11,9 @@ export const Loader = ({ inline }) => {
     }
 
     return (
-        <p className="text-center">
+        <div className="text-center">
             <Spinner animation="grow" />
-        </p>
+        </div>
     )
 }
 
