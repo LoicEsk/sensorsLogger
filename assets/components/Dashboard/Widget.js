@@ -6,6 +6,7 @@ import moment from 'moment';
 import ApiInterface from '../../managers/ApiInterface';
 
 import Graph from './Graph';
+import Loader from '../Loader';
 
 
 export const Widget = ({ widget }) => {
@@ -21,6 +22,7 @@ export const Widget = ({ widget }) => {
     const [ to, setTo ] = useState( moment() );
 
     const [ error, setError ] = useState( false );
+    const [ isLoading, setIsLoading ] = useState( true );
 
     // chargement des data sensors
     useEffect( async () => {
@@ -29,6 +31,8 @@ export const Widget = ({ widget }) => {
     
     const [ sensorsData, setSensorsData ] = useState( [] );
     const loadSensorsData = async () => {
+        // console.log( "Chargement des données du widget %s", widget.name );
+
         const newSensorsData = sensors && await Promise.all( sensors.map( async (s) => {
             setError( false ); // reset error
 
@@ -49,8 +53,12 @@ export const Widget = ({ widget }) => {
             }
         }));
         setSensorsData( newSensorsData );
+        setIsLoading( false );
 
-
+        // auto refresh
+        setTimeout(() => {
+            loadSensorsData();
+        }, 180000);
     }
 
 
@@ -58,9 +66,11 @@ export const Widget = ({ widget }) => {
         <Col md={ colSize } className={ "widget widget__size-" + widget.size } >
             { !!error && <Alert variant="danger">{ error }</Alert>}
             <p className="widget--title">{ widget.name }</p>
-            <Graph
-                data= { sensorsData }
-            />
+            { isLoading ? <Loader/> : (
+                <Graph
+                    data= { sensorsData }
+                />
+            )}
         </Col>
     )
 }
