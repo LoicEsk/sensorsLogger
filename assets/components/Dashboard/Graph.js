@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import moment from 'moment';
 
 
-export const Graph = ({data, title}) => {
+export const Graph = ({data, dataNames, title}) => {
 
     const options = {
         chart: {
@@ -29,19 +29,25 @@ export const Graph = ({data, title}) => {
         },
         xaxis: {
             type: 'datetime'
-        }  
+        },
+        tooltip: {
+            x: {
+                format: "d MMM HH:mm"
+            }
+        }
     };
 
     const [ series, setSeries ] = useState( [] );
     useEffect( () => {
-        const newSeries = data.map( line => {
+        const newSeries = data.map( (line, i) => {
             return {
                 data: line.map( d => {
                     return {
                         x: moment(d.date),
                         y: d.value
                     }
-                })
+                }),
+                name: dataNames[i] ?? 'Serie ' + i 
             };
         });
         console.log( newSeries );

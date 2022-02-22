@@ -69,6 +69,7 @@ export const Widget = ({ widget }) => {
             { isLoading ? <Loader/> : (
                 <Graph
                     data= { sensorsData }
+                    dataNames= { sensors.map( s => (s.name) )}
                 />
             )}
         </Col>
