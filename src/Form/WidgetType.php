@@ -36,8 +36,8 @@ class WidgetType extends AbstractType
                     'Il y a 1 semaine'  => '-P7D',
                     'Il y a 1 mois'     => '-P1M',
                 ],
-                'disabled'  => true,
-                'help'      => 'La fonctionnalité n\'est pas encore disponible'
+                'disabled'      => true,
+                'help'          => 'La fonctionnalité n\'est pas encore disponible'
             ])
             ->add('periodeValue', null, [
                 'label' => 'Durée de la période'

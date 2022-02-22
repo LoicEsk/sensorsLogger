@@ -28,7 +28,7 @@ class Widget
     /**
      * @ORM\Column(type="string", length=12)
      */
-    private $endTime;
+    private $endTime = 'PO';
 
     /**
      * @ORM\Column(type="integer")
