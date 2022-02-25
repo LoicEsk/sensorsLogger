@@ -50,7 +50,7 @@ export const Graph = ({data, dataNames, title}) => {
                 name: dataNames[i] ?? 'Serie ' + i 
             };
         });
-        console.log( newSeries );
+        // console.log( newSeries );
         setSeries( newSeries);
     }, [data] );
 

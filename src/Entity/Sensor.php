@@ -38,8 +38,9 @@ class Sensor
     private $actif = false;
     
 
-    public function __construct( $keyCode )
+    public function __construct( $keyCode = null )
     {
+        if( !$keyCode ) $keyCode = bin2hex( random_bytes( 8 ) );
         $this->setKeyCode( $keyCode );
     }
 

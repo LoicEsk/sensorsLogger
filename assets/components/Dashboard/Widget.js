@@ -7,6 +7,7 @@ import ApiInterface from '../../managers/ApiInterface';
 
 import Graph from './Graph';
 import Loader from '../Loader';
+import LastValue from './LastValue';
 
 
 export const Widget = ({ widget }) => {
@@ -67,10 +68,19 @@ export const Widget = ({ widget }) => {
             { !!error && <Alert variant="danger">{ error }</Alert>}
             <p className="widget--title">{ widget.name }</p>
             { isLoading ? <Loader/> : (
+                <>
+                { sensorsData.map( (data, i) => (
+                    <LastValue
+                        data={data}
+                        name={ sensors[i].name }
+                        className="float-end"
+                    />
+                ))}
                 <Graph
                     data= { sensorsData }
                     dataNames= { sensors.map( s => (s.name) )}
                 />
+                </>
             )}
         </Col>
     )
