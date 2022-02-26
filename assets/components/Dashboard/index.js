@@ -4,6 +4,8 @@ import { Container } from 'react-bootstrap';
 
 import Widgets from './Widgets';
 
+import './style.sass';
+
 export const Dashboard = () => {
 
     return (

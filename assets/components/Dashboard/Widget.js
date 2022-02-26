@@ -67,20 +67,25 @@ export const Widget = ({ widget }) => {
         <Col md={ colSize } className={ "widget widget__size-" + widget.size } >
             { !!error && <Alert variant="danger">{ error }</Alert>}
             <p className="widget--title">{ widget.name }</p>
+            
+
+            
             { isLoading ? <Loader/> : (
-                <>
-                { sensorsData.map( (data, i) => (
-                    <LastValue
-                        data={data}
-                        name={ sensors[i].name }
-                        className="float-end"
+                <div className="d-flex">
+                    <Graph
+                        data= { sensorsData }
+                        dataNames= { sensors.map( s => (s.name) )}
                     />
-                ))}
-                <Graph
-                    data= { sensorsData }
-                    dataNames= { sensors.map( s => (s.name) )}
-                />
-                </>
+                    <div className="d-flex flex-column">
+                        { sensorsData.map( (data, i) => (
+                            <LastValue
+                                data={data}
+                                name={ sensors[i].name }
+                                key={i}
+                            />
+                        ))}
+                    </div>
+                </div>
             )}
         </Col>
     )

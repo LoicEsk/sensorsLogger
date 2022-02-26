@@ -9,9 +9,9 @@ export const Graph = ({data, dataNames, title}) => {
     const options = {
         chart: {
             height: 350,
-            type: 'line',
+            type: 'area',
             zoom: {
-              enabled: false
+              enabled: true
             }
         },
         dataLabels: {

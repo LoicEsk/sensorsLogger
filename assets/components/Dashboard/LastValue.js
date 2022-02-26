@@ -8,21 +8,28 @@ export const LastValue = ( { data, name, className } ) => {
     const [ date, setDate ] = useState( '--/--/-- --:--');
 
     useEffect( () => {
-        data.sort( (a, b) => {
-            const dateA = moment(a.date);
-            const dateB = moment(b.date);
-            return dateB.unix() - dateA.unix();
-        } );
-        const lastData = data.shift();
-        setValue( lastData.value );
-        setDate( moment( lastData.date ).format( 'DD/MM/YYYY hh:mm') );
+        if( !!data ){
+            data.sort( (a, b) => {
+                const dateA = moment(a.date);
+                const dateB = moment(b.date);
+                return dateB.unix() - dateA.unix();
+            } );
+            const lastData = data.shift();
+            if( !!lastData ) {
+                setValue( lastData.value );
+                setDate( moment( lastData.date ).format( 'DD/MM/YYYY HH:mm') );
+            }
+
+        }
+
 
     }, [data] );
 
     return (
-        <div className={"text-center " + className }>
-            <p className="display-4 m-0">{ value }</p>
-            <p className="m-0"><small>{ date }</small></p>
+        <div className={"last-value " + className }>
+            <p className="m-0 last-value--small">{ name }</p>
+            <p className="last-value--big m-0  text-center">{ value }</p>
+            <p className="m-0 last-value--small text-end">{ date }</p>
         </div>
     )
 }
