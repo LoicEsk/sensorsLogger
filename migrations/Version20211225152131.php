@@ -14,7 +14,7 @@ final class Version20211225152131 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout des widgets';
     }
 
     public function up(Schema $schema): void

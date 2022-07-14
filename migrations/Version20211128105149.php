@@ -14,7 +14,7 @@ final class Version20211128105149 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout de la table sensor et sensor_data';
     }
 
     public function up(Schema $schema): void

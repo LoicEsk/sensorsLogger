@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Hello !{% endblock %}
 
 
 {% block body %}
@@ -27,6 +27,8 @@
                 <label for="remember_me">Keep me logged in</label>
 
                 <p class="text-end mt-2"><button type="submit" class="btn btn-primary">login</button></p>
+
+                <p><a href="{{ path("app_forgot_password_request") }}">Mot de passe oublié ?</a></p>
             </form>
         </div>
     </div>
