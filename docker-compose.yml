@@ -1,6 +1,6 @@
 version: '3'
 services:
-    php:
+    sf:
         build: .docker
         volumes:
             - .:/var/www/app
@@ -10,6 +10,7 @@ services:
             - db
             - mailhog
         user: www-data
+
     db:
         image: mysql:5
         ports:
@@ -34,3 +35,10 @@ services:
         environment: 
             - BASE_URL=http://localhost:8080
         command: sh -c "npm ci && npm run dev-server"
+
+    sensorFaker:
+        image: node
+        volumes:
+            - .docker/sensorFaker:/usr/src/app
+        working_dir: /usr/src/app
+        command: node app.js

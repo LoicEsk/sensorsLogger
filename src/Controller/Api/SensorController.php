@@ -38,7 +38,7 @@ class SensorController extends AbstractController
     /**
      * @Route("/api/sensor", name="api_sensor_post", methods={"POST"})
      */
-    public function testPost( Request $request, SensorRepository $sensorRepo ): Response
+    public function sensorPost( Request $request, SensorRepository $sensorRepo ): Response
     {
         $sensorKeyCode = $request->request->get( 'sensor' ) ?: false;
         $sensorValue = (float) $request->request->get( 'value' ) ?: false;
