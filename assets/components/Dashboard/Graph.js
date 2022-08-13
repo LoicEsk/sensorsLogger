@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Chart from "react-apexcharts";
+import fr  from "apexcharts/dist/locales/fr.json";
 import moment from 'moment';
 
 
@@ -11,8 +12,10 @@ export const Graph = ({data, dataNames, title}) => {
             height: 350,
             type: 'area',
             zoom: {
-              enabled: true
-            }
+              enabled: false
+            },
+            locales: [fr],
+            defaultLocale: 'fr',
         },
         dataLabels: {
             enabled: false
