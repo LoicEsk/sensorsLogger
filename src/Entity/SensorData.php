@@ -37,7 +37,7 @@ class SensorData
     {
         $this->setSensor( $sensor );
         $this->setValue( $value );
-        $this->setDate( new \Datetime );
+        $this->setDate( new \Datetime() );
     }
 
     public function getId(): ?int

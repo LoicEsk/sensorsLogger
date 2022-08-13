@@ -1,8 +1,10 @@
 
 const app = () => {
-    console.log("Sensor Faker");
+    console.log("Sensor Faker is running");
 
     const send = async ( value ) => {
+
+        console.log( "Envoi de la valeur %s sur le sensor %s", value, 'AAA' );
 
         const data = new FormData();
         data.append( 'sensor', 'AAA' );
@@ -26,9 +28,12 @@ const app = () => {
 
     }
 
+    let value = Math.random() * 100;
+    send( value );
+
 
     setInterval(() => {
-        const value = Math.floor( Math.random() * 100 );
+        value += Math.floor( Math.random() * 5 ) - 2.5;
         send( value );
         
     }, 60000);

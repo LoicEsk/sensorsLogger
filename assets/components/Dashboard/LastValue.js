@@ -16,7 +16,7 @@ export const LastValue = ( { data, name, className } ) => {
             } );
             const lastData = data.shift();
             if( !!lastData ) {
-                setValue( lastData.value );
+                setValue( lastData.value.toFixed(2) );
                 setDate( moment( lastData.date ).format( 'DD/MM/YYYY HH:mm') );
             }
 

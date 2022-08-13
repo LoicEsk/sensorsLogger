@@ -71,20 +71,20 @@ export const Widget = ({ widget }) => {
 
             
             { isLoading ? <Loader/> : (
-                <div className="d-flex">
+                <div className="d-md-flex flex-row-reverse">
+                    <div className="d-flex flex-column">
+                        { sensorsData.map( (data, i) => (
+                            <LastValue
+                            data={data}
+                            name={ sensors[i].name }
+                            key={i}
+                            />
+                            ))}
+                    </div>
                     <Graph
                         data= { sensorsData }
                         dataNames= { sensors.map( s => (s.name) )}
                     />
-                    <div className="d-flex flex-column">
-                        { sensorsData.map( (data, i) => (
-                            <LastValue
-                                data={data}
-                                name={ sensors[i].name }
-                                key={i}
-                            />
-                        ))}
-                    </div>
                 </div>
             )}
         </Col>

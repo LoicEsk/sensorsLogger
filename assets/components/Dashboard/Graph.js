@@ -43,8 +43,8 @@ export const Graph = ({data, dataNames, title}) => {
             return {
                 data: line.map( d => {
                     return {
-                        x: moment(d.date),
-                        y: d.value
+                        x: new Date( moment(d.date).format('YYYY-MM-DDTHH:mm+00:00') ),
+                        y: d.value.toFixed(2)
                     }
                 }),
                 name: dataNames[i] ?? 'Serie ' + i 
