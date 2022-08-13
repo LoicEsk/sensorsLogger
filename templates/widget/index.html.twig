@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Widget index{% endblock %}
+
+{% block content %}
+    <h1>Widget index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Période</th>
+                <th>EndTime</th>
+                <th>Position</th>
+                <th>Size</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for widget in widgets %}
+            <tr>
+                <td>{{ widget.id }}</td>
+                <td>{{ widget.periodeValue }} {{ widget.periodeUnit }}</td>
+                <td>{{ widget.endTime }}</td>
+                <td>{{ widget.position }}</td>
+                <td>{{ widget.size }}</td>
+                <td>{{ widget.name }}</td>
+                <td>
+                    <a href="{{ path('widget_show', {'id': widget.id}) }}">show</a>
+                    <a href="{{ path('widget_edit', {'id': widget.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('widget_new') }}">Create new</a>
+{% endblock %}
