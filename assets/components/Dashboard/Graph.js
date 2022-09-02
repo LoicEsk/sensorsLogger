@@ -4,6 +4,8 @@ import Chart from "react-apexcharts";
 import fr  from "apexcharts/dist/locales/fr.json";
 import moment from 'moment';
 
+import { lissageCourbe } from '../../managers/DataManager';
+
 
 export const Graph = ({data, dataNames, title}) => {
 
@@ -53,8 +55,16 @@ export const Graph = ({data, dataNames, title}) => {
                 name: dataNames[i] ?? 'Serie ' + i 
             };
         });
-        // console.log( newSeries );
+        console.log( newSeries );
         setSeries( newSeries);
+
+        setTimeout(() => {
+            console.log( 'simplification' );
+            setSeries( newSeries.map( s => {
+                s.data = lissageCourbe( s.data );
+                return s;
+            } ) );
+        }, 3000);
     }, [data] );
 
 
