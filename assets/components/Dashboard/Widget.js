@@ -31,6 +31,7 @@ export const Widget = ({ widget }) => {
 
         // auto refresh
         const interval = setInterval( () => {
+            console.log('reload');
             loadSensorsData();
         }, 180000);
 

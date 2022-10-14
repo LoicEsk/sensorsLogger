@@ -55,18 +55,21 @@ export const Graph = ({data, dataNames, title}) => {
                 name: dataNames[i] ?? 'Serie ' + i 
             };
         });
-        console.log( newSeries );
         setSeries( newSeries);
 
         setTimeout(() => {
             console.log( 'simplification' );
-            setSeries( newSeries.map( s => {
-                s.data = lissageCourbe( s.data );
+            const seriesSimplifiees =  newSeries.map( s => {
+                s.data = lissageCourbe( s.data, 360000 );
                 return s;
-            } ) );
+            } );
+            setSeries( seriesSimplifiees );
         }, 3000);
     }, [data] );
 
+    useEffect( () => {
+        console.log( 'Series : ', series );
+    }, [series] );
 
     return (
         <Chart
