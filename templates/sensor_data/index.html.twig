@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SensorData index{% endblock %}
+
+{% block content %}
+    <h1>SensorData index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Value</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sensor_datum in sensor_datas %}
+            <tr>
+                <td>{{ sensor_datum.id }}</td>
+                <td>{{ sensor_datum.value }}</td>
+                <td>{{ sensor_datum.date ? sensor_datum.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('sensor_data_show', {'id': sensor_datum.id}) }}">show</a>
+                    <a href="{{ path('sensor_data_edit', {'id': sensor_datum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('sensor_data_new') }}">Create new</a>
+{% endblock %}

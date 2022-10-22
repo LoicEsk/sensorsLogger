@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SensorData{% endblock %}
+
+{% block content %}
+    <h1>SensorData</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Value</th>
+                <td>{{ sensor_datum.value }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ sensor_datum.date ? sensor_datum.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('sensor_show', { 'id': sensor_datum.sensor.id } ) }}" class="btn btn-primary">back to sensor</a>
+
+    <a href="{{ path('sensor_data_edit', {'id': sensor_datum.id}) }}" class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+
+    {{ include('sensor_data/_delete_form.html.twig') }}
+{% endblock %}
