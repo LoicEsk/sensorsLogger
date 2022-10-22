@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\SensorDataRepository;
+use App\Entity\SensorData;
 
 /**
  * @Route("/sensor")
@@ -89,6 +90,12 @@ class SensorController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$sensor->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            // suppression des données liées au capteur
+            $entityManager->getRepository( SensorData::class )->deleteSendorData( $sensor );
+            $entityManager->flush();
+
+            // suppression du sensor
             $entityManager->remove($sensor);
             $entityManager->flush();
         }
