@@ -17,8 +17,9 @@ class SensorDataType extends AbstractType
             ->add('value')
             ->add('date')
             ->add('sensor', EntityType::class, [
-                'class' => Sensor::class,
-                'choice_label'  => 'name'
+                'class'         => Sensor::class,
+                'choice_label'  => 'name',
+                'disabled'      => true
             ] )
         ;
     }

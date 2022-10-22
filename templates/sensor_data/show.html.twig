@@ -15,6 +15,10 @@
                 <th>Date</th>
                 <td>{{ sensor_datum.date ? sensor_datum.date|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>Sensor</th>
+                <td>{{ sensor_datum.sensor.name }} ({{ sensor_datum.sensor.keyCode }})</td>
+            </tr>
         </tbody>
     </table>
 

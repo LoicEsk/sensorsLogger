@@ -53,7 +53,10 @@
             <tr>
                 <th>{{ d.date|date('d/m/Y H:i:s') }}</th>
                 <td>{{ d.value }}{{ sensor.unit }}</td>
-                <td><a href="{{ path("sensor_data_show", {'id': d.id} ) }}" class="btn btn-outline-primary"><i class="fa-solid fa-eye"></i></a></td>
+                <td>
+                    <a href="{{ path("sensor_data_show", {'id': d.id} ) }}" class="btn btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path("sensor_data_edit", {'id': d.id} ) }}" class="btn btn-outline-primary"><i class="fa-solid fa-edit"></i></a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
