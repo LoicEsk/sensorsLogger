@@ -29,9 +29,6 @@ export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
     const startData = oData.shift();
     const endData   = oData.pop();
 
-    console.log( 'startData = ', startData );
-    console.log( 'endData = ', endData );
-
     // nouveau tableau de valeurs
     const newData = [];
 
@@ -42,7 +39,6 @@ export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
     
     let pt = oData.shift();
     while( periodStart <= endData.x ) {
-        console.log('Période');
         periodEnd   = periodStart + intervalFilter;
         
         // liste des points dans l'interval
@@ -54,10 +50,10 @@ export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
         
         // point moyen
         if( pts.length !== 0) {
-            console.log( 'Reduction de ', pts );
+            // console.log( 'Reduction de ', pts );
             const x = pts.reduce( (a, b) => (a + b.x), 0) / pts.length;
             const y = pts.reduce( (a, b) => (a + b.y), 0 ) / pts.length;
-            console.log( '-> x: %s, y: %s', x, y);
+            // console.log( '-> x: %s, y: %s', x, y);
             newData.push({
                 x: x,
                 y: y
@@ -75,12 +71,12 @@ export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
     const output = newData.map( d => {
         return {
             x: new Date( d.x ),
-            y: d.y.toString()
+            y: Number((d.y).toFixed(2))
         }
     });
 
-    console.log( 'entrée : ', data );
-    console.log( 'sortie : ', output );
+    // console.log( 'entrée : ', data );
+    // console.log( 'sortie : ', output );
 
     return output;
 
