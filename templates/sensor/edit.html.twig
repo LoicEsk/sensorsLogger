@@ -7,7 +7,12 @@
 
     {{ include('sensor/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('sensor_index') }}">back to list</a>
+    <div class="float-end">
+        {{ include('sensor/_delete_form.html.twig') }}
+    </div>
+    
+    <p class="my-3">
+        <a href="{{ path('sensor_index') }}" class="btn btn-outline-primary">back to list</a>
+    </p>
 
-    {{ include('sensor/_delete_form.html.twig') }}
 {% endblock %}

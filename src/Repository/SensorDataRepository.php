@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SensorData;
+use App\Entity\Sensor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,21 @@ class SensorDataRepository extends ServiceEntityRepository
 
             ->orderBy( 'd.date', 'ASC' )
 
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function deleteSendorData( Sensor $sensor )
+    {
+        $qb = $this->createQueryBuilder( 's' );
+        $qb
+            ->delete()
+            ->where( $qb->expr()->eq( 's.sensor', ':id' ) )
+            ->setParameter( 'id', $sensor->getId() )
+        ;
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;

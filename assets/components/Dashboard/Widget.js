@@ -71,8 +71,8 @@ export const Widget = ({ widget }) => {
 
             
             { isLoading ? <Loader/> : (
-                <div className="d-md-flex flex-row-reverse">
-                    <div className="d-flex flex-column">
+                <div className="">
+                    <div className="d-flex">
                         { sensorsData.map( (data, i) => (
                             <LastValue
                             data={data}
