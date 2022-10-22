@@ -1,6 +1,3 @@
-import simplify from 'simplify-js';
-import moment from 'moment';
-
 export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
 
     const dataPoints = data.map( (p) => { 
