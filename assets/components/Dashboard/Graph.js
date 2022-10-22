@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Chart from "react-apexcharts";
 import fr  from "apexcharts/dist/locales/fr.json";
 import moment from 'moment';
 
+import { lissageCourbe } from '../../managers/DataManager';
+
 
 export const Graph = ({data, dataNames, title}) => {
+
+    const graphRef = useRef();
 
     const options = {
         chart: {
@@ -53,18 +57,56 @@ export const Graph = ({data, dataNames, title}) => {
                 name: dataNames[i] ?? 'Serie ' + i 
             };
         });
-        // console.log( newSeries );
         setSeries( newSeries);
+
+        /**
+         * Lissage des courbes
+         */
+
+
+        // console.log( 'simplification' );
+        const seriesSimplifiees =  newSeries.map( s => {
+            s.data = lissageCourbe( s.data, getSimplifyInterval( s.data ) );
+            return s;
+        } );
+        setSeries( seriesSimplifiees );
+
     }, [data] );
+
+    // calcul de l'interval de simplification
+    const getSimplifyInterval = ( data ) => {
+        if( graphRef && graphRef.current && graphRef.current.offsetWidth ) {
+            
+            // interval voulu en px
+            const intervalPx = 16;
+
+            // taille en pixels
+            const width = graphRef.current.offsetWidth;
+
+            // 'taille' en ms
+            const timestamps = data.map( (d) => ( d.x.getTime() ) )
+            const ots = timestamps.sort();
+            const min = ots.shift();
+            const max = ots.pop();
+            const msLine = max - min;
+            
+            return Math.round( msLine / width * intervalPx );
+
+            return 360000;
+        } else return 360000;
+    }
 
 
     return (
-        <Chart
-            options={options}
-            series={series}
-            type="line"
-            height={350}
-        />
+        <div ref = { graphRef }>
+            <Chart
+                options={options}
+                series={series}
+                type="line"
+                height={350}
+                // key={ Date.now() } // pour refresh
+            />
+        </div>
     )
 }
 

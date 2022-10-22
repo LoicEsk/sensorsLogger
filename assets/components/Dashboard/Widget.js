@@ -28,11 +28,20 @@ export const Widget = ({ widget }) => {
     // chargement des data sensors
     useEffect( async () => {
         await loadSensorsData();
+
+        // auto refresh
+        const interval = setInterval( () => {
+            console.log('reload');
+            loadSensorsData();
+        }, 180000);
+
+        return () => clearInterval( interval );
+
     }, [widget] );
     
     const [ sensorsData, setSensorsData ] = useState( [] );
     const loadSensorsData = async () => {
-        // console.log( "Chargement des données du widget %s", widget.name );
+        console.log( "Chargement des données du widget %s", widget.name );
 
         const newSensorsData = sensors && await Promise.all( sensors.map( async (s) => {
             setError( false ); // reset error
@@ -55,11 +64,6 @@ export const Widget = ({ widget }) => {
         }));
         setSensorsData( newSensorsData );
         setIsLoading( false );
-
-        // auto refresh
-        setTimeout(() => {
-            loadSensorsData();
-        }, 180000);
     }
 
 
