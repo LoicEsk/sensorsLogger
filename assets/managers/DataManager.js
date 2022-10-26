@@ -26,6 +26,8 @@ export const lissageCourbe = ( data, intervalFilter = 7200000 ) => {
     const startData = oData.shift();
     const endData   = oData.pop();
 
+    if( !startData || !endData ) return data; // rien à traiter
+
     // nouveau tableau de valeurs
     const newData = [];
 
