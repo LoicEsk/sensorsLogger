@@ -20,8 +20,6 @@ export const Widget = ({ widget }) => {
     }
     const colSize = colSizeMapping[widget.size];
 
-    const [ to, setTo ] = useState( moment() );
-
     const [ error, setError ] = useState( false );
     const [ isLoading, setIsLoading ] = useState( true );
 
@@ -40,12 +38,14 @@ export const Widget = ({ widget }) => {
     }, [widget] );
     
     const [ sensorsData, setSensorsData ] = useState( [] );
+
     const loadSensorsData = async () => {
         console.log( "Chargement des données du widget %s", widget.name );
 
         const newSensorsData = sensors && await Promise.all( sensors.map( async (s) => {
             setError( false ); // reset error
 
+            const to = moment();
             const from = to.clone();
             from.subtract( periodeValue, periodeUnit );
 
