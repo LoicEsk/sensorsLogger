@@ -81,11 +81,13 @@ class SensorDataController extends AbstractController
      */
     public function delete(Request $request, SensorData $sensorDatum, EntityManagerInterface $entityManager): Response
     {
+        $sensor_id = $sensorDatum->getSensor()->getId();
+
         if ($this->isCsrfTokenValid('delete'.$sensorDatum->getId(), $request->request->get('_token'))) {
             $entityManager->remove($sensorDatum);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('sensor_data_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('sensor_show', ['id' => $sensor_id ], Response::HTTP_SEE_OTHER);
     }
 }
