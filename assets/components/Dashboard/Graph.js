@@ -47,6 +47,8 @@ export const Graph = ({data, dataNames, title}) => {
     const [ series, setSeries ] = useState( [] );
     useEffect( () => {
         const newSeries = data.map( (line, i) => {
+
+            if( !line ) return !!series[i] && series[i];
             return {
                 data: line.map( d => {
                     return {

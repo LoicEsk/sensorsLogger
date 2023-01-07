@@ -60,6 +60,7 @@ export const Widget = ({ widget }) => {
                 return data;
             }  else {
                 setError( 'Oups, Impossible de lire des données capteur' );
+                return null;
             }
         }));
         setSensorsData( newSensorsData );
