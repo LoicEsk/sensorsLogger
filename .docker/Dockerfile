@@ -44,7 +44,7 @@ RUN a2enmod rewrite
 RUN a2enmod headers
 
 # Mise en forme des erreurs et var_dump()
-RUN pecl install xdebug
+RUN pecl install xdebug-3.0.4
 RUN docker-php-ext-enable xdebug 
 
 # Copie des clés RSA pour autoriser composer à se connecter à Github
