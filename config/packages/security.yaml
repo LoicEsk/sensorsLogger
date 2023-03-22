@@ -44,5 +44,5 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: ^/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%env(SECURE_SCHEME)%' }
-        - { path: ^/api/sensor , roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/api/sensor , roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: 'http' }
+        - { path: ^/, roles: ROLE_USER, requires_channel: '%env(SECURE_SCHEME)%' }
