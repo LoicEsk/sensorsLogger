@@ -36,7 +36,7 @@ class SensorController extends AbstractController
     }
 
     /**
-     * @Route("/api/sensor", name="api_sensor_post", methods={"POST"})
+     * @Route("/api/sensor", name="api_sensor_post", methods={"POST"}, schemes={"https", "http"})
      */
     public function sensorPost( Request $request, SensorRepository $sensorRepo ): Response
     {

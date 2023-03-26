@@ -28,7 +28,7 @@ class SensorController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="sensor_new", methods={"GET","POST"}, schemes={"https", "http"})
+     * @Route("/new", name="sensor_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
