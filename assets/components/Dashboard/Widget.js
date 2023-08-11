@@ -31,7 +31,7 @@ export const Widget = ({ widget }) => {
         const interval = setInterval( () => {
             console.log('reload');
             loadSensorsData();
-        }, 180000);
+        }, 6000);
 
         return () => clearInterval( interval );
 

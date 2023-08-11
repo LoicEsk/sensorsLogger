@@ -56,6 +56,12 @@ class Widget
      */
     private $periodeValue;
 
+    /**
+     * @ORM\Column(type="string", length=16)
+     * @Assert\NotNull()
+     */
+    private $widgetType;
+
     public function __construct()
     {
         $this->sensors = new ArrayCollection();
@@ -158,6 +164,18 @@ class Widget
     public function setPeriodeValue(int $periodeValue): self
     {
         $this->periodeValue = $periodeValue;
+
+        return $this;
+    }
+
+    public function getWidgetType(): ?string
+    {
+        return $this->widgetType;
+    }
+
+    public function setWidgetType(string $widgetType): self
+    {
+        $this->widgetType = $widgetType;
 
         return $this;
     }

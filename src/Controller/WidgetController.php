@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Widget;
-use App\Form\WidgetType;
+use App\Form\WidgetGraphType;
+use App\Form\WidgetValuesType;
+use App\Form\TypeWidgetType;
 use App\Repository\WidgetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,20 +28,63 @@ class WidgetController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="widget_new", methods={"GET","POST"})
+     * @Route("/new/{widgetType}", name="widget_new_typed", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function newTyped(Request $request, string $widgetType, WidgetRepository $widgetRepo): Response
     {
+        
+        $widgetForms = [
+            'graph'     => WidgetGraphType::class,
+            'values'    => WidgetValuesType::class
+        ];
+
+        // type existant ?
+        if( !isset($widgetForms[$widgetType] ) ) {
+            throw $this->createNotFoundException( "Le type de widget $widgetType n'existe pas" );
+        }
+
+        
+        // new widget du type voulu
         $widget = new Widget();
-        $form = $this->createForm(WidgetType::class, $widget);
+        $widget->setWidgetType( $widgetType );
+        
+        // autocomplete
+        if( $request->query->has('name') ) {
+            $widget->setName( $request->query->get('name' ) );
+        }
+        
+        // création du formaulaire du type de widget voulu
+        $form = $this->createForm( $widgetForms[$widgetType], $widget);
         $form->handleRequest($request);
 
+        // création du widget à la réception des données
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($widget);
             $entityManager->flush();
 
             return $this->redirectToRoute('widget_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('widget/new.html.twig', [
+            'widget' => $widget,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="widget_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
+    {
+        $widget = new Widget();
+        $form = $this->createForm(TypeWidgetType::class, $widget);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $typeWidget = $widget->getWidgetType();
+
+            return $this->redirectToRoute('widget_new_typed', ['widgetType' => $typeWidget, 'name' => $widget->getName()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('widget/new.html.twig', [
@@ -63,7 +108,20 @@ class WidgetController extends AbstractController
      */
     public function edit(Request $request, Widget $widget): Response
     {
-        $form = $this->createForm(WidgetType::class, $widget);
+        $widgetType = $widget->getWidgetType();
+
+        // formualaires selon les types
+        $widgetForms = [
+            'graph'     => WidgetGraphType::class,
+            'values'    => WidgetValuesType::class
+        ];
+
+        // type existant ?
+        if( !isset($widgetForms[$widgetType] ) ) {
+            $widgetType = 'graph'; // type par défaut en cas d'erreur ou de vieu widget sans type
+        }
+
+        $form = $this->createForm( $widgetForms[$widgetType], $widget);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

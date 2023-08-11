@@ -12,7 +12,7 @@ export const Loader = ({ inline }) => {
 
     return (
         <div className="text-center">
-            <Spinner animation="grow" />
+            <Spinner animation="border" /> Chargement ...
         </div>
     )
 }
