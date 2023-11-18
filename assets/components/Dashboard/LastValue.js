@@ -2,28 +2,49 @@ import React, { useState, useEffect } from 'react';
 
 import moment from 'moment';
 
-export const LastValue = ( { data, name, className } ) => {
+import ApiInterface from '../../managers/ApiInterface';
+
+export const LastValue = ( { sensor, className } ) => {
 
     const [ value, setValue ] = useState( '--' );
     const [ date, setDate ] = useState( '--/--/-- --:--');
 
-    useEffect( () => {
-        if( !!data ){
+    console.debug( sensor );
+
+    const { name, id } = sensor;
+
+    const getMinMax = ( data ) => {
+        if( Array.isArray( data ) ){
             data.sort( (a, b) => {
                 const dateA = moment(a.date);
                 const dateB = moment(b.date);
                 return dateB.unix() - dateA.unix();
             } );
-            const lastData = data.shift();
-            if( !!lastData ) {
-                setValue( lastData.value.toFixed(2) );
-                setDate( moment( lastData.date ).format( 'DD/MM/YYYY HH:mm') );
+
+            if( data.length !== 0 ) {
+                return {
+                    min
+                }
             }
+            const lastData = data.shift();
+            
 
         }
 
 
-    }, [data] );
+    };
+
+    const loadData = () => {
+        const api = new ApiInterface();
+
+        const formtDate = moment().subtract( 1, 'h' );
+        const toDate = moment();
+        const resp = api.get( `/api/sensors/${id}/data`, { from: fromDate.format( 'YYYY-MM-DD'), to: toDate.format( 'YYYY-MM-DD' ) } );
+    }
+
+    useEffect( () => {  
+
+    }, [] );
 
     return (
         <div className={"last-value " + className }>

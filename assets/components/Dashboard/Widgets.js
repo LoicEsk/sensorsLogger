@@ -4,7 +4,7 @@ import { Row, Alert } from 'react-bootstrap';
 
 import ApiInterface from '../../managers/ApiInterface';
 import Loader from '../Loader';
-import Widget from './Widget';
+import Widget from '../Widget';
 
 
 export const Widgets = () => {

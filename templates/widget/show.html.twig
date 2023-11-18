@@ -34,9 +34,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('widget_index') }}">back to list</a>
+    <div class="mt-3 mb-3">
+        <a href="{{ path('widget_index') }}" class="btn btn-outline-primary">back to list</a>
+        <a href="{{ path('widget_edit', {'id': widget.id}) }}" class="btn btn-primary">edit</a>
+    </div>
 
-    <a href="{{ path('widget_edit', {'id': widget.id}) }}">edit</a>
 
     {{ include('widget/_delete_form.html.twig') }}
 {% endblock %}
