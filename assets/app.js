@@ -15,7 +15,10 @@ import ReactDOM from 'react-dom';
 import './styles/app.sass';
 import Dashboard from './components/Dashboard';
     
-ReactDOM.render(
-    <Dashboard/>,
-    document.getElementById('appJs')
-);
+const elem = document.getElementById('appJs');
+if( elem ) {
+    ReactDOM.render(
+        <Dashboard/>,
+        elem
+    );
+}

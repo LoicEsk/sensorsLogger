@@ -11,5 +11,4 @@ echo "Install des packages node"
 docker compose run --rm encore npm ci
 
 echo "Compilation des Assets"
-docker compose stop encore
-docker compose up -d
+docker compose run --rm encore npm run dev
