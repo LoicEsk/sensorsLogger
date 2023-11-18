@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:7.4-apache
+FROM php:8.2-apache
 
 # Droits d'écriture pour www-data
 RUN usermod -u 1000 www-data
@@ -44,7 +44,7 @@ RUN a2enmod rewrite
 RUN a2enmod headers
 
 # Mise en forme des erreurs et var_dump()
-RUN pecl install xdebug-3.0.4
+RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug 
 
 # Copie des clés RSA pour autoriser composer à se connecter à Github
