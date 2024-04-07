@@ -25,8 +25,9 @@ export const Graph = ({data, dataNames, title}) => {
             enabled: false
         },
         stroke: {
-            // curve: 'straight'
-            curve: 'smooth'
+            curve: 'straight',
+            // curve: 'smooth'
+            width: 3
         },
         grid: {
             row: {

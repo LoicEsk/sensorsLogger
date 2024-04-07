@@ -23,7 +23,7 @@ class WidgetController extends AbstractController
     public function index(WidgetRepository $widgetRepository): Response
     {
         return $this->render('widget/index.html.twig', [
-            'widgets' => $widgetRepository->findAll(),
+            'widgets' => $widgetRepository->findBy( [], [ 'position' => 'ASC' ]),
         ]);
     }
 

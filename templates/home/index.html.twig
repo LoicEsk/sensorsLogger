@@ -3,5 +3,21 @@
 {% block title %}Sensors logger{% endblock %}
 
 {% block content %}
+
+<div class="container">
+    <div class="row">
+    {% for w in widgets %}
+        <div class="col-md-{{ 12 / w.size }}">
+        {% if w.widgetType == 'graph' %}
+            {% include 'home/_widget_graph.html.twig' with { widget: w } %}
+        {% else %}
+            {% include 'home/_widget_values.html.twig' with { widget: w } %}
+        {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
 <div id="appJs">Loading ...</div>
 {% endblock %}
+
