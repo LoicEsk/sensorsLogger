@@ -1,7 +1,10 @@
-const Encore = require('@symfony/webpack-encore');
+import { createRequire } from 'node:module';
+import Encore from '@symfony/webpack-encore';
+
+const require = createRequire(import.meta.url);
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
-// It's useful when you use tools that rely on webpack.config.js file.
+// It's useful when you use tools that rely on webpack.config.mjs file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
@@ -40,19 +43,23 @@ Encore
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
+    // Encore >= 7 n'active plus de minificateur CSS par défaut : on garde cssnano, comme avant
+    .configureCssMinimizerPlugin((options, MinimizerPlugin) => {
+        options.minify = MinimizerPlugin.cssnanoMinify;
     })
 
-    // enables @babel/preset-env polyfills
-    .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = 3;
+    // Polyfills core-js ajoutés selon l'usage (équivalent de l'ancien useBuiltIns: 'usage',
+    // supprimé de @babel/preset-env par Babel 8). Les propriétés de classe sont gérées
+    // nativement par preset-env : plus besoin de @babel/plugin-proposal-class-properties.
+    .configureBabel((config) => {
+        config.plugins.push(['polyfill-corejs3', {
+            method: 'usage-global',
+            version: require('core-js/package.json').version,
+        }]);
     })
 
     // enables Sass/SCSS support
@@ -81,4 +88,4 @@ Encore
     })
 ;
 
-module.exports = Encore.getWebpackConfig();
+export default await Encore.getWebpackConfig();

@@ -14,8 +14,16 @@ const buildDir = path.join(projectDir, 'public/build');
 
 const readBuildFile = (publicPath) => readFileSync(path.join(projectDir, 'public', publicPath), 'utf8');
 
+// chemin du binaire "encore" lu dans le package.json d'Encore (il change selon les versions)
+const encoreBin = () => {
+    const encoreDir = path.join(projectDir, 'node_modules/@symfony/webpack-encore');
+    const { bin } = JSON.parse(readFileSync(path.join(encoreDir, 'package.json'), 'utf8'));
+
+    return path.join(encoreDir, typeof bin === 'string' ? bin : bin.encore);
+};
+
 test('le build de production produit le JS et le CSS de l\'entrée "app"', { timeout: 300_000 }, () => {
-    execFileSync(process.execPath, [path.join(projectDir, 'node_modules/@symfony/webpack-encore/bin/encore.js'), 'production'], {
+    execFileSync(process.execPath, [encoreBin(), 'production'], {
         cwd: projectDir,
         stdio: 'pipe',
         env: { ...process.env, NODE_ENV: 'production' },
