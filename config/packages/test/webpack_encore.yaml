@@ -1,2 +1,3 @@
-#webpack_encore:
-#    strict_mode: false
+# Permet de rendre les templates en test sans avoir compilé les assets
+webpack_encore:
+    strict_mode: false
