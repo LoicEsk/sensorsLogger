@@ -8,6 +8,9 @@ import ApiInterface from '../../managers/ApiInterface';
 import Graph from './Graph';
 import Loader from '../Loader';
 import LastValue from './LastValue';
+import startLoading from './startLoading';
+
+const REFRESH_DELAY = 180000; // 3 min
 
 
 export const Widget = ({ widget }) => {
@@ -23,23 +26,13 @@ export const Widget = ({ widget }) => {
     const [ error, setError ] = useState( false );
     const [ isLoading, setIsLoading ] = useState( true );
 
-    // chargement des data sensors
-    useEffect( async () => {
-        await loadSensorsData();
-
-        // auto refresh
-        const interval = setInterval( () => {
-            console.log('reload');
-            loadSensorsData();
-        }, 180000);
-
-        return () => clearInterval( interval );
-
-    }, [widget] );
+    // chargement des data sensors + auto refresh
+    // (effet synchrone : startLoading renvoie le nettoyage qui arrête l'intervalle et annule le chargement en cours)
+    useEffect( () => startLoading( loadSensorsData, REFRESH_DELAY ), [widget] );
     
     const [ sensorsData, setSensorsData ] = useState( [] );
 
-    const loadSensorsData = async () => {
+    const loadSensorsData = async ( isCancelled ) => {
         console.log( "Chargement des données du widget %s", widget.name );
 
         const newSensorsData = sensors && await Promise.all( sensors.map( async (s) => {
@@ -59,10 +52,14 @@ export const Widget = ({ widget }) => {
             if( status === 200 && !!data ) {
                 return data;
             }  else {
-                setError( 'Oups, Impossible de lire des données capteur' );
+                if( !isCancelled() ) setError( 'Oups, Impossible de lire des données capteur' );
                 return null;
             }
         }));
+
+        // démonté ou widget changé pendant le chargement : on ne touche plus au state
+        if( isCancelled() ) return;
+
         setSensorsData( newSensorsData );
         setIsLoading( false );
     }

@@ -5,6 +5,7 @@ import { Row, Alert } from 'react-bootstrap';
 import ApiInterface from '../../managers/ApiInterface';
 import Loader from '../Loader';
 import Widget from './Widget';
+import startLoading from './startLoading';
 
 
 export const Widgets = () => {
@@ -15,9 +16,15 @@ export const Widgets = () => {
     const [ widgets, setWidgets ] = useState( [] );
     const [ sensors, setSensors ] = useState( [] );
 
-    useEffect( async () => {
+    useEffect( () => startLoading( loadWidgets ), [] );
+
+    const loadWidgets = async ( isCancelled ) => {
         const api = new ApiInterface();
         const widgetList = await api. get( '/api/widget' );
+
+        // démonté pendant la requête : on ne touche plus au state
+        if( isCancelled() ) return;
+
         const { status, data } = widgetList;
 
         // Traitement des données widgets
@@ -36,7 +43,7 @@ export const Widgets = () => {
 
 
         setIsLoading( false );
-    }, [] );
+    };
 
 
     return (
