@@ -41,11 +41,13 @@ class SensorController extends AbstractController
     public function sensorPost( Request $request, SensorRepository $sensorRepo ): Response
     {
         $sensorKeyCode = $request->request->get( 'sensor' ) ?: false;
-        $sensorValue = (float) $request->request->get( 'value' ) ?: false;
+        // 0 est une mesure valide : seule une valeur absente ou non numérique est ignorée
+        $rawValue = $request->request->get( 'value' );
+        $sensorValue = is_numeric( $rawValue ) ? (float) $rawValue : null;
 
         $em = $this->getDoctrine()->getManager();
-        
-        if( $sensorKeyCode && $sensorValue) {
+
+        if( $sensorKeyCode && null !== $sensorValue ) {
             $this->logger->info( "Requete POST reçue", [ 'sensor' => $sensorKeyCode, 'value' => $sensorValue ] );
 
             // recherche du sensor

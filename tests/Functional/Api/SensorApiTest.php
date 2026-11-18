@@ -63,6 +63,62 @@ class SensorApiTest extends FunctionalTestCase
         $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
     }
 
+    public function testPostOfZeroValueFromActiveSensorStoresIt(): void
+    {
+        $this->createSensor('AAA', true);
+
+        $this->client->request('POST', '/api/sensor', ['sensor' => 'AAA', 'value' => '0']);
+
+        $this->assertResponseIsSuccessful();
+        $data = $this->em()->getRepository(SensorData::class)->findAll();
+        $this->assertCount(1, $data);
+        $this->assertSame(0.0, $data[0]->getValue());
+        $this->assertSame('AAA', $data[0]->getSensor()->getKeyCode());
+    }
+
+    public function testPostOfZeroValueFromUnknownSensorRegistersItAsInactive(): void
+    {
+        $this->client->request('POST', '/api/sensor', ['sensor' => 'NEW-SENSOR', 'value' => '0']);
+
+        $this->assertResponseIsSuccessful();
+        $sensors = $this->em()->getRepository(Sensor::class)->findAll();
+        $this->assertCount(1, $sensors);
+        $this->assertSame('NEW-SENSOR', $sensors[0]->getKeyCode());
+        $this->assertFalse($sensors[0]->getActif());
+        $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
+    }
+
+    /**
+     * Une valeur absente ou non numérique ne doit jamais être enregistrée comme un 0,
+     * ni faire enregistrer un capteur inconnu.
+     *
+     * @dataProvider provideMissingOrNonNumericValue
+     *
+     * @param array<string, string> $parameters
+     */
+    public function testPostWithMissingOrNonNumericValueStoresNothing(array $parameters): void
+    {
+        $this->createSensor('AAA', true);
+
+        $this->client->request('POST', '/api/sensor', $parameters);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
+        $this->assertSame(1, $this->em()->getRepository(Sensor::class)->count([]));
+    }
+
+    /**
+     * @return iterable<string, array{array<string, string>}>
+     */
+    public static function provideMissingOrNonNumericValue(): iterable
+    {
+        yield 'capteur actif, value absente' => [['sensor' => 'AAA']];
+        yield 'capteur actif, value vide' => [['sensor' => 'AAA', 'value' => '']];
+        yield 'capteur actif, value non numérique' => [['sensor' => 'AAA', 'value' => 'abc']];
+        yield 'capteur inconnu, value absente' => [['sensor' => 'NEW-SENSOR']];
+        yield 'capteur inconnu, value non numérique' => [['sensor' => 'NEW-SENSOR', 'value' => 'abc']];
+    }
+
     public function testSensorDetailRequiresAuthentication(): void
     {
         $sensor = $this->createSensor('AAA');
