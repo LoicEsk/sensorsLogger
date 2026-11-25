@@ -12,6 +12,16 @@ class SensorTest extends TestCase
         $this->assertSame('AAA', (new Sensor('AAA'))->getKeyCode());
     }
 
+    public function testKeyCodeZeroGivenAtConstructionIsKept(): void
+    {
+        $this->assertSame('0', (new Sensor('0'))->getKeyCode());
+    }
+
+    public function testRandomHexadecimalKeyCodeIsGeneratedWhenEmptyStringIsGiven(): void
+    {
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{16}$/', (new Sensor(''))->getKeyCode());
+    }
+
     public function testRandomHexadecimalKeyCodeIsGeneratedWhenNoneIsGiven(): void
     {
         $first = (new Sensor())->getKeyCode();

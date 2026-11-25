@@ -40,7 +40,8 @@ class Sensor
 
     public function __construct( $keyCode = null )
     {
-        if( !$keyCode ) $keyCode = bin2hex( random_bytes( 8 ) );
+        // "0" est une clé valide : seule une clé absente ou vide est générée
+        if( null === $keyCode || '' === $keyCode ) $keyCode = bin2hex( random_bytes( 8 ) );
         $this->setKeyCode( $keyCode );
     }
 

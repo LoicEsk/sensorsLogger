@@ -63,6 +63,40 @@ class SensorApiTest extends FunctionalTestCase
         $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
     }
 
+    public function testPostWithEmptySensorKeyStoresNothing(): void
+    {
+        $this->client->request('POST', '/api/sensor', ['sensor' => '', 'value' => '21.5']);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(0, $this->em()->getRepository(Sensor::class)->count([]));
+        $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
+    }
+
+    public function testPostFromActiveSensorWithKeyZeroStoresTheValue(): void
+    {
+        $this->createSensor('0', true);
+
+        $this->client->request('POST', '/api/sensor', ['sensor' => '0', 'value' => '21.5']);
+
+        $this->assertResponseIsSuccessful();
+        $data = $this->em()->getRepository(SensorData::class)->findAll();
+        $this->assertCount(1, $data);
+        $this->assertSame(21.5, $data[0]->getValue());
+        $this->assertSame('0', $data[0]->getSensor()->getKeyCode());
+    }
+
+    public function testPostFromUnknownSensorWithKeyZeroRegistersItAsInactive(): void
+    {
+        $this->client->request('POST', '/api/sensor', ['sensor' => '0', 'value' => '21.5']);
+
+        $this->assertResponseIsSuccessful();
+        $sensors = $this->em()->getRepository(Sensor::class)->findAll();
+        $this->assertCount(1, $sensors);
+        $this->assertSame('0', $sensors[0]->getKeyCode());
+        $this->assertFalse($sensors[0]->getActif());
+        $this->assertSame(0, $this->em()->getRepository(SensorData::class)->count([]));
+    }
+
     public function testPostOfZeroValueFromActiveSensorStoresIt(): void
     {
         $this->createSensor('AAA', true);
