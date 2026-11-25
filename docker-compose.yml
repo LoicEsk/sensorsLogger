@@ -37,7 +37,7 @@ services:
         command: sh -c "npm ci && npm run dev-server"
 
     sensorFaker:
-        image: node
+        image: node:24
         volumes:
             - .docker/sensorFaker:/usr/src/app
         working_dir: /usr/src/app

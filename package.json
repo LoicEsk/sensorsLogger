@@ -21,7 +21,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
-        "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"tests/js/**/*.test.mjs\""
+        "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test --test-force-exit \"tests/js/**/*.test.mjs\""
     },
     "dependencies": {
         "apexcharts": "^3.33.1",
@@ -30,5 +30,8 @@
         "moment": "^2.29.4",
         "react-apexcharts": "^1.3.9",
         "react-bootstrap": "^2.1.2"
+    },
+    "engines": {
+        "node": ">=24"
     }
 }
