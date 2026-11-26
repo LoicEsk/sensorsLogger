@@ -18,7 +18,7 @@ const app = () => {
             if( rep.ok ) {
                 console.log( await rep.text() );
             } else {
-                console.log("HTTP-Error: " + response.status);
+                console.log("HTTP-Error: " + rep.status);
             }
 
         } catch (e) {
